@@ -1,0 +1,3 @@
+---
+torrent_user: "{{ default_user }}"
+torrent_group: "{{ default_group }}"

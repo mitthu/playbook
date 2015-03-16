@@ -1,0 +1,10 @@
+---
+# Hub config
+cache_dir: /var/cache/apt-cacher-ng
+log_dir: /var/log/apt-cacher-ng
+port: 3142
+bind_address: 0.0.0.0
+
+# Access config
+access_address: localhost
+access_port: 3142

@@ -1,0 +1,2 @@
+---
+- include: "{{ type | default('hub') }}.yml"

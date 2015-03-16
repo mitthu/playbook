@@ -1,0 +1,20 @@
+---
+- name: Install apps
+  apt: name={{ item }} state=latest cache_valid_time={{ pkg_cache_time }}
+  with_items:
+    - deluged
+    - deluge-webui
+
+- name: Add init confs
+  template: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode="u=rw,g=r,o=r"
+  with_items:
+    - src: deluged.conf
+      dest: /etc/init/deluged.conf
+    - src: deluge-web.conf
+      dest: /etc/init/deluge-web.conf
+
+- name: Start service
+  service: name={{ item }} state=started
+  with_items:
+    - deluged
+    - deluge-web

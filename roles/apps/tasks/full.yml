@@ -1,0 +1,108 @@
+---
+- include: basic.yml
+
+- name: Full => Add keys
+  apt_key: url="{{ item }}"
+  tags: repos
+  with_items:
+    # Google
+    - https://dl-ssl.google.com/linux/linux_signing_key.pub
+
+- name: Full => Add repos
+  apt_repository: repo="{{ item }}"
+  tags: repos
+  with_items:
+    # Google chrome
+    - "deb http://dl.google.com/linux/chrome/deb/ stable main"
+
+- name: Full => Add ppas
+  apt_repository: repo="{{ item }}"
+  tags: repos
+  when: ansible_distribution == "Ubuntu"
+  with_items:
+    - ppa:ansible/ansible
+    - ppa:kilian/f.lux
+    - ppa:keithw/mosh
+    - ppa:deluge-team/ppa
+    # Themes
+    - ppa:snwh/pulp
+    - ppa:numix/ppa
+    - ppa:satyajit-happy/themes
+    # Old versions of python
+    - ppa:fkrull/deadsnakes
+
+- name: Full => Install cmd apps
+  apt: name={{ item }} state=latest cache_valid_time={{ pkg_cache_time }}
+  when: cmd
+  with_items:
+    # Dictionary
+    - dict
+    - dictd
+    - dict-gcide
+    - dict-wn
+    - dict-devil
+    - dict-moby-thesaurus
+    - espeak
+
+    # Others
+    - openvpn
+    - mosh
+    - awscli
+    - urlview
+    - mr
+    - vagrant
+    - oathtool
+
+- name: Full => Install gui apps
+  apt: name={{ item }} state=latest cache_valid_time={{ pkg_cache_time }}
+  when: gui
+  with_items:
+    # Basic
+    - keepassx
+    - firefox
+    - google-chrome-stable
+    - fluxgui
+    - dconf-editor
+    - deluge
+    - terminator
+    # Encfs support
+    - cryptkeeper
+    
+    # Themes
+    ## Paper theme
+    - paper-gtk-theme
+    - paper-icon-theme
+    ## Numix theme
+    - numix-gtk-theme
+    - numix-plymouth-theme
+    - numix-icon-theme
+    - numix-icon-theme-bevel
+    - numix-icon-theme-circle
+    ## Gnome Shell 3 => create custom theme
+    - gnome-shell-theme-elegance-colors
+
+    # Gnome related
+    - gnome-tweak-tool
+    - gnome-themes-extras
+    - gnome-shell-extension-autohidetopbar
+
+    # Dictionary
+    - goldendict
+    - goldendict-wordnet
+    - gnome-dictionary
+    # Thesaurus
+    - artha
+
+    # Remote session
+    - remmina
+    - remmina-plugin-vnc
+    - remmina-plugin-rdp
+
+    # Automation
+    - xdotool
+    - xsel
+    # for dmenu -
+    - suckless-tools
+
+    # Generate IP packets
+    - packeth

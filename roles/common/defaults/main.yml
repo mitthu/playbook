@@ -1,0 +1,4 @@
+---
+fish_users: ["{{ default_user }}"]
+hostname: ''
+motd_disable_users: ["{{ default_user }}"]

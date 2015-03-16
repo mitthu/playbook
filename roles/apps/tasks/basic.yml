@@ -1,0 +1,14 @@
+---
+- include: minimal.yml
+
+- name: Basic => Install apps
+  apt: name={{ item }} state=latest cache_valid_time={{ pkg_cache_time }}
+  when: cmd
+  with_items:
+    - make
+    - build-essential
+    - git
+    - subversion
+    - python-pip
+    - python-boto
+    - python-virtualenv

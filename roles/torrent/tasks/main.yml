@@ -1,0 +1,7 @@
+---
+- name: Add ppa
+  apt_repository: repo={{ item }}
+  with_items:
+    - ppa:deluge-team/ppa
+
+- include: "{{ type | default('hub') }}.yml"

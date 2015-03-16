@@ -1,0 +1,11 @@
+---
+- name: Install and configure packages
+  hosts: localhost
+  connection: local
+  sudo: yes
+  roles:
+    - role: apps
+      type: full
+      gui: yes
+    - role: common
+

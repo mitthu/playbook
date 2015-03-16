@@ -1,0 +1,18 @@
+---
+- name: sudo without password (sudo group)
+  copy: src=sudo dest=/etc/sudoers.d/sudo_group owner=root
+
+- name: Change shell to fish
+  user: name={{ item }} shell=/usr/bin/fish append=true
+  with_items: fish_users
+
+- name: Change hostname
+  hostname: name="{{ hostname }}"
+  when: hostname is defined and hostname != ""
+
+- name: Disable motd login banner
+  shell: touch ~/.hushlogin creates=~/.hushlogin
+  sudo: yes
+  sudo_user: "{{ item }}"
+  with_items: motd_disable_users
+  when: motd_disable_users is defined

@@ -1,0 +1,25 @@
+---
+- name: Minimal => Install cmd apps
+  apt: name={{ item }} state=latest cache_valid_time={{ pkg_cache_time }}
+  when: cmd
+  with_items:
+    - vim
+    - git
+    - tmux
+    - curl
+    - fish
+    - tree
+    - expect
+    - ipython
+    - whois
+    - htop
+    - powertop
+    - dstat
+    - logtail
+
+- name: Minimal => Install gui apps
+  apt: name={{ item }} state=latest cache_valid_time={{ pkg_cache_time }}
+  when: gui
+  with_items:
+    - vim-gtk
+    - gparted

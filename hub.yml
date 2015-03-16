@@ -1,0 +1,9 @@
+---
+# vim:ft=ansible:
+- hosts: all
+  sudo: yes
+  roles:
+    - role: apps
+      type: basic
+    - role: common
+    - role: torrent

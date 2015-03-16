@@ -1,0 +1,5 @@
+---
+# vim:ft=ansible:
+pkg_cache_time: 4000
+default_user: vagrant
+default_group: vagrant

@@ -1,0 +1,2 @@
+---
+- include: "{{ type | default('minimal') }}.yml"

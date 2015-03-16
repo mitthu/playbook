@@ -1,0 +1,8 @@
+---
+- name: Install package
+  apt: name=apt-cacher-ng state=latest
+
+- name: Apply config
+  template: src=acng.conf.j2 dest=/etc/apt-cacher-ng/acng.conf owner=root group=root mode="u=rw,g=r,o=r"
+  notify:
+    - restart apt-cacher-ng
