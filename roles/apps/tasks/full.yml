@@ -17,7 +17,7 @@
 
 - name: Full => Add ppas
   apt_repository: repo="{{ item }}"
-  tags: repos
+  tags: repos,ppas
   when: ansible_distribution == "Ubuntu"
   with_items:
     - ppa:ansible/ansible
@@ -28,6 +28,8 @@
     - ppa:snwh/pulp
     - ppa:numix/ppa
     - ppa:satyajit-happy/themes
+    - ppa:moka/stable
+    - ppa:noobslab/themes
     # Old versions of python
     - ppa:fkrull/deadsnakes
 
@@ -80,6 +82,8 @@
     - numix-icon-theme-circle
     ## Gnome Shell 3 => create custom theme
     - gnome-shell-theme-elegance-colors
+    ## Others
+    - orchis-gtk-theme
 
     # Gnome related
     - gnome-tweak-tool
