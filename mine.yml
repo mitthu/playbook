@@ -8,4 +8,6 @@
       type: full
       gui: yes
     - role: common
-
+    - role: apt-cacher-ng
+      type: access
+      tags: cache
