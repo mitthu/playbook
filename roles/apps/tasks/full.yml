@@ -68,9 +68,14 @@
     - dconf-editor
     - deluge
     - terminator
-    - caffeine
     # Encfs support
     - cryptkeeper
+    - gdebi
+
+    # Panel Indicators
+    - caffeine
+    - indicator-cpufreq
+    - indicator-multiload
     
     # Themes
     ## Paper theme
