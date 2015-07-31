@@ -55,6 +55,8 @@
     - mr
     - vagrant
     - oathtool
+    - youtube-dl
+    - mpg123
 
 - name: Full => Install gui apps
   apt: name={{ item }} state=latest cache_valid_time={{ pkg_cache_time }}
