@@ -1,0 +1,16 @@
+---
+- name: Create dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: 1000
+    group: 1000
+  loop:
+    - '{{ base_sf }}'
+
+- name: clone mitthu/falcolibs
+  ansible.builtin.git:
+    repo: 'git@github.com:mitthu/falcolibs.git'
+    dest: '{{ base_sf }}/falcolibs/'
+    version: dev

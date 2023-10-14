@@ -1,0 +1,105 @@
+---
+# Run as:
+# ansible-playbook siis.yml     # if password-less sudo
+# ansible-playbook -K siis.yml  # asks for password
+- name: Setup SIIS VM => Fedora 
+  tags: ['never']
+  hosts: localhost
+  become: true
+  tasks:
+  - name: Start & enable service sshd
+    ansible.builtin.service:
+      name: sshd
+      state: started
+      enabled: yes
+
+  - name: Install command-line apps
+    ansible.builtin.dnf:
+      name:
+        - fish
+        - ncdu
+        - tmux
+        - htop
+        - nfs-utils
+      state: latest
+
+  - name: Install dev tools
+    ansible.builtin.dnf:
+      name:
+        - '@Development tools'
+        - cmake
+        - ncurses-devel.x86_64
+        - golang-bin
+        - bpftrace
+        - clang
+        - llvm
+        - g++
+        # For falcolibs/
+        - perl-FindBin
+        - openssl-devel
+        - openssl-perl
+        - perl-File-Compare
+        - pcre2-devel
+
+  - name: Upgrade kernel
+    ansible.builtin.dnf:
+      name: kernel
+      state: latest
+
+  - name: Create dirs
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0755'
+      owner: 1000
+      group: 1000
+    loop:
+      - /nfs/iso
+      - /nfs/azb254
+      - /srv/local
+
+  - name: Mount /nfs/iso
+    ansible.posix.mount:
+      path: /nfs/iso
+      src: "172.31.126.10:/export/home/do_not_backup/siis_lab_services/vcenter-siis/ISO"
+      fstype: nfs4
+      state: mounted
+  
+  - name: Mount /nfs/azb254
+    ansible.posix.mount:
+      path: /nfs/azb254
+      src: "172.31.126.10:/export/home/do_not_backup/siis_members/siis_jaeger/azb254"
+      fstype: nfs4
+      state: mounted
+
+#########################################
+
+- name: Configure user
+  hosts: localhost
+  tasks:
+    - name: Set tmux shell to fish
+      ansible.builtin.copy:
+        dest: '{{ansible_env.HOME}}/.melocal/ansible.sh'
+        mode: '0755'
+        content: |
+          # Created by ansible
+          export TMUX_SHELL=$(which fish)
+
+    # Configure git
+    - git_config:
+        name: user.name
+        scope: global
+        value: Aditya Basu
+
+    - git_config:
+        name: user.email
+        scope: global
+        value: aditya.basu@psu.edu
+
+#########################################
+
+- name: Add projects
+  hosts: localhost
+  roles:
+    - role: siis
+      project: sysflow
