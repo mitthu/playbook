@@ -1,0 +1,51 @@
+- name: Start & enable service sshd
+  ansible.builtin.service:
+    name: sshd
+    state: started
+    enabled: yes
+
+- name: Install command-line apps (dnf)
+  ansible.builtin.dnf:
+    name:
+      - fish
+      - ncdu
+      - tmux
+      - htop
+      - nfs-utils
+      - vim
+    state: latest
+
+- name: Install dev tools (dnf)
+  ansible.builtin.dnf:
+    name:
+      - '@Development tools'
+      - cmake
+      - ncurses-devel.x86_64
+      - golang-bin
+      - bpftrace
+      - clang
+      - llvm
+      - g++
+
+- name: Upgrade kernel
+  ansible.builtin.dnf:
+    name: kernel
+    state: latest
+
+- name: Create dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: 1000
+    group: 1000
+  loop:
+    - /nfs/iso
+    - /srv/local
+
+- name: Mount /nfs/iso
+  ansible.posix.mount:
+    path: /nfs/iso
+    src: "172.31.126.10:/export/home/do_not_backup/siis_lab_services/vcenter-siis/ISO"
+    fstype: nfs4
+    state: mounted

@@ -1,0 +1,31 @@
+---
+- name: Choose profile
+  include_vars: "profile-{{ profile | default(home) }}.yml"
+
+- name: Install dotfiles
+  ansible.builtin.shell:
+    cmd: 'curl -sL http://bit.ly/1wgBOfx | /bin/bash -ex -s noshellchange'
+    creates: '{{ansible_env.HOME}}/.merc'
+
+- name: Set tmux shell to fish
+  ansible.builtin.copy:
+    dest: '{{ansible_env.HOME}}/.melocal/ansible.sh'
+    mode: '0755'
+    content: |
+      # Created by ansible
+      export TMUX_SHELL=$(which fish)
+
+- git_config:
+    name: user.name
+    scope: global
+    value: Aditya Basu
+
+- git_config:
+    name: user.email
+    scope: global
+    value: "{{ email }}"
+
+- git_config:
+    name: push.default
+    scope: global
+    value: simple

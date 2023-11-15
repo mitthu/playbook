@@ -1,2 +1,11 @@
 ---
-- include_tasks: "{{ project }}.yml"
+- include_tasks: "os_debian.yml"
+  when: ansible_os_family == 'Debian'
+  tags: package
+
+- include_tasks: "os_redhat.yml"
+  when: ansible_os_family == 'RedHat'
+  tags: package
+
+- include_tasks: "prj_{{ project }}.yml"
+  when: project is defined

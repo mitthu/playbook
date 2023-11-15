@@ -1,0 +1,46 @@
+---
+- name: Start & enable service sshd
+  ansible.builtin.service:
+    name: ssh
+    state: started
+    enabled: yes
+
+- name: Install command-line apps (apt)
+  ansible.builtin.apt:
+    name:
+      - fish
+      - ncdu
+      - tmux
+      - htop
+      - nfs-common
+      - vim
+      - wget
+      - curl
+    state: latest
+
+- name: Install dev tools (apt)
+  ansible.builtin.apt:
+    name:
+      - 'build-essential'
+      - cmake
+      - clang
+      - llvm
+      - g++
+
+- name: Create dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: 1000
+    group: 1000
+  loop:
+    - /nfs/iso
+    - /srv/local
+
+- name: Mount /nfs/iso
+  ansible.posix.mount:
+    path: /nfs/iso
+    src: "172.31.126.10:/export/home/do_not_backup/siis_lab_services/vcenter-siis/ISO"
+    fstype: nfs4
+    state: mounted

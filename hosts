@@ -1,2 +1,6 @@
 [all]
 localhost
+
+[siis]
+siis.sf.fedora
+siis.lsm
